@@ -1,0 +1,11 @@
+# Haskell FizzBuzz Test
+
+This is a haskell module contained any functions "`fizzbuzz<N>`", where `<N>` is a positive integer number. Each of this functions solves famous programming challenge: fizzbuzz test
+
+## FizzBuzz Test
+
+>>> Write a program that prints the numbers from 1 to 100. But for multiples of three print “Fizz” instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”
+
+## Purpose
+
+Just for fun
