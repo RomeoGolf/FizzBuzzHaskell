@@ -190,6 +190,18 @@ fizzbuzz10' = do
   put (int + 1)
   unless (int == 100) fizzbuzz10'
 
+-- with monad State without IO
+fizzbuzz10'' :: State (Int, [String]) ()
+fizzbuzz10'' = do
+  (i, acc) <- get
+  let lp = (acc ++)
+  when (mod i 5 == 0) (put (succ i, lp ["buzz"]))
+  when (mod i 3 == 0) (put (succ i, lp ["fizz"]))
+  when (mod i 15 == 0) (put (succ i, lp ["fizzbuzz"]))
+  unless (mod i 15 == 0 || mod i 5 == 0 || mod i 3 == 0) (put (succ i, lp $ [show i]))
+  unless (i == 100) fizzbuzz10''
+fizzbuzz10 = snd $ execState fizzbuzz10'' (1, [])
+
 -- ****************** --
 testData = [ "1", "2","fizz", "4","buzz","fizz", "7", "8","fizz","buzz","11","fizz","13","14","fizzbuzz",
             "16","17","fizz","19","buzz","fizz","22","23","fizz","buzz","26","fizz","28","29","fizzbuzz",
