@@ -31,8 +31,8 @@ fizzbuzz2 = helper 1 where
     helper 101 = []
     helper n = case n `mod` 15 of
         0 -> "fizzbuzz" : helper (n + 1)
-        x | (x `elem` [3, 6, 9, 12]) -> "fizz" : helper (n + 1)
-        x | (x `elem` [5, 10]) -> "buzz" : helper (n + 1)
+        x | x `elem` [3, 6, 9, 12] -> "fizz" : helper (n + 1)
+        x | x `elem` [5, 10] -> "buzz" : helper (n + 1)
         _ -> show n : helper (n + 1)
 
 -- with a list comprehension
@@ -82,7 +82,7 @@ fizzbuzz6 = let
     a15 = match pred 15 "fizzbuzz"
     a3 = match pred 3 "fizz"
     a5 = match pred 5 "buzz"
-    aOther = \n -> Just (show n)
+    aOther = Just  . show
 
     toFizzBuzz n = fromJust $ a15 n <|> a3 n <|> a5 n <|> aOther n 
 
@@ -105,28 +105,20 @@ fizzbuzz7 = let
     read5 = readN 5 "buzz"
     read15 = readN 15 "fizzbuzz"
     readOther [] = do
-            r <- ask
-            return $ show r
+        asks show
     readOther s = return s
-    {-
-    readOther s = case s of
-        [] -> do
-            r <- ask
-            return $ show r
-        _ -> return s
-    -}
 
-    in map (runReader (return "" >>= read15 >>= read3 >>= read5 >>= readOther)) [1..100]
+    in map (runReader (read15 "" >>= read3 >>= read5 >>= readOther)) [1..100]
 
 -- mad composition
 fizzbuzz8 :: [String]
-fizzbuzz8 = (f3. f5 . f15 . show) <$> [1..100] where
-    f15 x = if (read x) `mod` 15 == 0 then "fizzbuzz" else x
+fizzbuzz8 = f3. f5 . f15 . show <$> [1..100] where
+    f15 x = if read x `mod` 15 == 0 then "fizzbuzz" else x
     f5 "fizzbuzz" = "fizzbuzz"
-    f5 x = if (read x) `mod` 5 == 0 then "buzz" else x
+    f5 x = if read x `mod` 5 == 0 then "buzz" else x
     f3 "fizzbuzz" = "fizzbuzz"
     f3 "buzz" = "buzz"
-    f3 x = if (read x) `mod` 3 == 0 then "fizz" else x
+    f3 x = if read x `mod` 3 == 0 then "fizz" else x
 
 
 -- parser for an Int list
@@ -198,7 +190,7 @@ fizzbuzz10'' = do
   when (mod i 5 == 0) (put (succ i, lp ["buzz"]))
   when (mod i 3 == 0) (put (succ i, lp ["fizz"]))
   when (mod i 15 == 0) (put (succ i, lp ["fizzbuzz"]))
-  unless (mod i 15 == 0 || mod i 5 == 0 || mod i 3 == 0) (put (succ i, lp $ [show i]))
+  unless (mod i 15 == 0 || mod i 5 == 0 || mod i 3 == 0) (put (succ i, lp [show i]))
   unless (i == 100) fizzbuzz10''
 fizzbuzz10 = snd $ execState fizzbuzz10'' (1, [])
 
