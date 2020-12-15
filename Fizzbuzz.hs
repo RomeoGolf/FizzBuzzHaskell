@@ -212,7 +212,7 @@ testData = [ "1", "2","fizz", "4","buzz","fizz", "7", "8","fizz","buzz","11","fi
             "91","92","fizz","94","buzz","fizz","97","98","fizz","buzz"]
 passed = "Passed"
 failed = "Failed"
-tests = [fizzbuzz1, fizzbuzz2, fizzbuzz3, fizzbuzz4, fizzbuzz5, fizzbuzz6, fizzbuzz7, fizzbuzz8, fizzbuzz9]
+tests = [fizzbuzz1, fizzbuzz2, fizzbuzz3, fizzbuzz4, fizzbuzz5, fizzbuzz6, fizzbuzz7, fizzbuzz8, fizzbuzz9, fizzbuzz10]
 runTests = map (\x -> if x == testData then passed else failed) tests
 test
     | all (== passed) runTests = passed
