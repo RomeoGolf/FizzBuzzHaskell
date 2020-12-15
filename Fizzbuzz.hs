@@ -177,9 +177,10 @@ fizzbuzz9Parser = (:) <$> (mod15 <|> mod3 <|> mod5 <|> anyNumber) <*> fizzbuzz9P
 fizzbuzz9 :: [String]
 fizzbuzz9 = (fst . head) $ apply fizzbuzz9Parser [1..100]
 
+-- with monad transformer StateT and IO
 -- evalState fizzbuzz10 1
-fizzbuzz10 :: StateT Int IO ()
-fizzbuzz10 = do
+fizzbuzz10' :: StateT Int IO ()
+fizzbuzz10' = do
   int <- get
   let lp = lift . putStrLn
   when (mod int 15 == 0) (lp "fizzbuzz")
@@ -187,7 +188,7 @@ fizzbuzz10 = do
   when (mod int 3 == 0) (lp "fizz")
   unless (mod int 15 == 0 || mod int 5 == 0 || mod int 3 == 0) (lp $ show int)
   put (int + 1)
-  unless (int == 100) fizzbuzz10
+  unless (int == 100) fizzbuzz10'
 
 -- ****************** --
 testData = [ "1", "2","fizz", "4","buzz","fizz", "7", "8","fizz","buzz","11","fizz","13","14","fizzbuzz",
